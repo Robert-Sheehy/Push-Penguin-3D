@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PenguinArea : MonoBehaviour
+public class PenguinArea : MonoBehaviour,IDestoryable,IHitable
 {
     private float heightOfWorldFloor = 0.0f;
     public Transform IceBlockPreFab,WallPrefab;
     private int widthOfWorld = 20;
     private int depthOfWorld = 20;
-
+    //public GameObject[] ranIceBlocks;
+    //public Transform[] spawn;
 
 
 
@@ -17,8 +18,6 @@ public class PenguinArea : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
-        GameObject iceblock = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         //Creates rocks for area to be placed at the edges of the arena
 
         //rock.name = "Rock Edge ";
@@ -97,11 +96,22 @@ public class PenguinArea : MonoBehaviour
 
 
 
-    // Update is called once per frame
+
     void Update()
     {
 
     }
 
-    
+
+
+    public bool DoDestroy()
+    {
+        throw new NotImplementedException();
     }
+
+    public Hit OnHit()
+    {
+        throw new NotImplementedException();
+    }
+
+}

@@ -42,7 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 9
   m_GIWorkflowMode: 0
   m_GISettings:
     serializedVersion: 2
@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
-    serializedVersion: 9
+    serializedVersion: 8
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -87,7 +87,7 @@ LightmapSettings:
     m_PVRFilteringAtrousNormalSigma: 1
     m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_ShadowMaskMode: 2
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 219063428}
   - component: {fileID: 219063427}
   - component: {fileID: 219063432}
+  - component: {fileID: 219063433}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -204,14 +205,28 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 219063426}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b31e24bfcb603324f82c30aab7c995f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IceBlockPreFab: {fileID: 4145360599388096, guid: 255d5f51ab1aedd4c837ced461d964b5,
+  IceBlockPreFab: {fileID: 4145360599388096, guid: e1084507255870c47b015915a1f47bef,
     type: 2}
-  WallPrefab: {fileID: 4871014725579364, guid: e477ea25bdc75ec40ac2c079ed5489b8, type: 2}
+  WallPrefab: {fileID: 4871014725579364, guid: 4fb2811d242b0ad4aa513e319db8d8a8, type: 2}
+--- !u!114 &219063433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 219063426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddb1e0644ed2e954588323ffae0702a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IceBlockPreFab: {fileID: 4193283141135696, guid: 67012d36547442841b75fe29a38a5a2c,
+    type: 2}
+  WallPrefab: {fileID: 4871014725579364, guid: 4fb2811d242b0ad4aa513e319db8d8a8, type: 2}
 --- !u!1 &1238110263
 GameObject:
   m_ObjectHideFlags: 0

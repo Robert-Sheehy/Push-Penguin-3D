@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManagerControl : MonoBehaviour, IScorable, ISpawnable{
+public class GameManagerControl : MonoBehaviour,IScorable,ISpawnable{
     enum ItemType { Apple,Banana,Cherry}
 
     private int currentEggs;
@@ -53,7 +53,7 @@ public class GameManagerControl : MonoBehaviour, IScorable, ISpawnable{
 
     public int AddScore(char item, int currentScore)
     {
-        List<ItemType> myList = new List<ItemType>();
+       /* List<ItemType> myList = new List<ItemType>();
 
         foreach (ItemType i in myList)
             if (i== currentlyActiveType) 
@@ -80,7 +80,7 @@ public class GameManagerControl : MonoBehaviour, IScorable, ISpawnable{
                     break;
                 }
         }
-
+        */
         return currentScore;
     }
 
