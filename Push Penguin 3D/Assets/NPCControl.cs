@@ -92,6 +92,7 @@ public class NPCControl : MonoBehaviour, IDestoryable {
 
                 //check left
 				float dot = Vector3.Dot(transform.forward, player.transform.position);
+                print(dot);
 			//print(transform.forward);
                 if (dot > 0)
                 {
@@ -112,10 +113,10 @@ public class NPCControl : MonoBehaviour, IDestoryable {
                         destinationWhileFollowing = Vector3.down;
                     //if (dot < 0)
                 }
-			else {
-				transform.Rotate(0, -90, 0);
-				return;
-			}
+    			else {
+	    			transform.Rotate(0, -90, 0);
+		    		return;
+    			}
                 break;
             #endregion
         }
@@ -125,9 +126,9 @@ public class NPCControl : MonoBehaviour, IDestoryable {
         
         RaycastHit h;
 		Physics.Raycast(raycastTarget.transform.position, player.transform.position - transform.position, out h);
-        if (h.rigidbody != null)
+        if (h.collider != null)
         {
-			if (h.rigidbody.gameObject.Equals(player) && (player.transform.position - transform.position).magnitude < 5)
+			if (h.collider.gameObject.Equals(player) && (player.transform.position - transform.position).magnitude < 5)
             {
 
                 status = Status.following;
@@ -148,9 +149,9 @@ public class NPCControl : MonoBehaviour, IDestoryable {
     }
 
     /// <summary>
-    /// 
+    /// Move towards a destination.
     /// </summary>
-    /// <param name="destination"></param>
+    /// <param name="dest">The destination to move to</param>
     private void Move(Vector3 dest)
     {
         //Move towards destination
