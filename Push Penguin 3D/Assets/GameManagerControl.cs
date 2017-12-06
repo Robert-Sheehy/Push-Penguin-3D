@@ -181,24 +181,24 @@ public class GameManagerControl : MonoBehaviour
         theWorld.spawnRandomRocks(10);
         theWorld.spawnRandomIceBlocks(20);
 
-        Vector3 playerStartingPostion = theWorld.randomEmptyPosition();
-        Instantiate(playerClone, playerStartingPostion, Quaternion.identity);
 
-        //for (int i = 0; i<numberOfEggs; i++)
-        //{
-        //    Vector3 eggStartingPosition = theWorld.randomEmptyPosition();
-        //    EggSpawnAt(eggStartingPosition);
- 
+        for (int i = 0; i < numberOfEggs; i++)
+        {
+            Vector3 eggStartingPosition = theWorld.randomEmptyPosition();
+            EggSpawnAt(eggStartingPosition);
+        }
 
-        //}
-
-        for (int i = 0; i < numberOfStartingItems; i++)
+           
+            for (int i = 0; i < numberOfStartingItems; i++)
             SpawnRandomItem();
 
 
 
+        Vector3 playerStartingPostion = theWorld.randomEmptyPosition();
+        Instantiate(playerClone, playerStartingPostion+0.2f*Vector3.up, Quaternion.identity);
 
-    //    LevelControl();
+
+        //    LevelControl();
     }
 
     // Update is called once per frame

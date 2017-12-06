@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33203315250517590}
   - component: {fileID: 135178537422990330}
   - component: {fileID: 114326297209990460}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: NPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4642983794470796}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: RaycastTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   - component: {fileID: 4364599389251758}
   - component: {fileID: 33418208782574472}
   - component: {fileID: 23317385829572298}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: default
   m_TagString: Untagged
   m_Icon: {fileID: 0}

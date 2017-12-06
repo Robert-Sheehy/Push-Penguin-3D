@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 65711410597516830}
   - component: {fileID: 23339331706049600}
   - component: {fileID: 114555418092348658}
-  - component: {fileID: 54844893825635964}
   - component: {fileID: 33386397020148768}
+  - component: {fileID: 54816681929740056}
   m_Layer: 0
   m_Name: IceBlock
   m_TagString: IceBlock
@@ -83,7 +83,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1740549413242332}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54844893825635964
+--- !u!54 &54816681929740056
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -91,21 +91,21 @@ Rigidbody:
   m_GameObject: {fileID: 1740549413242332}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 1
+  m_AngularDrag: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Constraints: 126
+  m_CollisionDetection: 1
 --- !u!65 &65711410597516830
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1740549413242332}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_Material: {fileID: 13400000, guid: 54ca0a2d4a5544b4192164ea19d7e15c, type: 2}
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.9, y: 0.9, z: 0.9}

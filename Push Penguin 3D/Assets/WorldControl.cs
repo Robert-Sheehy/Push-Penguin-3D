@@ -93,12 +93,19 @@ public class WorldControl : MonoBehaviour
         throw new Exception("maybe don't use this");
     }
 
-    internal Vector3 getDestinationForIceblockMoving(IceBlockController iceBlockController, Vector3 pusherPosition)
+    internal Vector3 getDirectionForIceblockMoving(IceBlockController iceBlockController, Vector3 pusherPosition)
     {
         Vector3 positionOfIceBlock = iceBlockController.transform.position;
         Vector3 direction = SnapTo(positionOfIceBlock) - SnapTo(pusherPosition);
+        if (DirectioIsDiagonal(ref direction))
+            return Vector3.zero;
         return direction;
 
+    }
+
+    private static bool DirectioIsDiagonal(ref Vector3 direction)
+    {
+        return Mathf.Abs(Mathf.Abs(Vector3.Dot(direction.normalized, Vector3.right)) - 0.7071f) < 0.05f;
     }
 
     internal Boolean canMove(IceBlockController iceBlockController, Vector3 pusherPosition){
@@ -142,7 +149,7 @@ public class WorldControl : MonoBehaviour
     }
 
 
-    private Vector3 SnapTo(Vector3 v)
+    internal Vector3 SnapTo(Vector3 v)
     {
 
         return new Vector3(Mathf.RoundToInt(v.x), heightOfWorldFloor, Mathf.RoundToInt(v.z));
@@ -187,7 +194,7 @@ public class WorldControl : MonoBehaviour
 
     /// <returns></returns> 
 
-    private bool IsEmptyAt(Vector3 Position)
+    internal bool IsEmptyAt(Vector3 Position)
     {
 
         Ray testRay = new Ray(Position + 5.0f * Vector3.up, Vector3.down);
@@ -195,7 +202,7 @@ public class WorldControl : MonoBehaviour
         if (Physics.Raycast(testRay, out info))
         {
             IceBlockController ice = info.collider.gameObject.GetComponent<IceBlockController>();
-            if (ice) return true;
+            if (ice) return ice.transform.position.y < -0.1f;
            
         }
 

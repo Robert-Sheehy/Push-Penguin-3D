@@ -24,28 +24,29 @@ public class NPCControl : MonoBehaviour, IDestoryable {
     private int moveSpeed = 3;
     private const float STOPPING_DISTANCE = 0.06f, WAIT_TIME = 0.25f;
 
-    private static GameObject player;
+	private static GameObject player;
+	//private RaycastHit h;
     
     void Start () {
         //If there is no NPC parent, create and assign NPC parent
         if (NPCParent == null)
             NPCParent = new GameObject("NPC Parent").transform;
 
-        transform.SetParent(NPCParent);
+        //transform.SetParent(NPCParent);
         status = Status.waiting;
         raycastTarget = transform.GetChild(0);
         destinationWhileFollowing = Vector3.down;
         canFollow = true;
         //player = GameObject.Find("").GetComponent<GameManagerControl>().player[0];
-        if (player == null)
-            player = GameObject.Find("Player");
+		if (player == null)
+			player = GameObject.FindObjectOfType<PenguinControl> ().gameObject;
     }
 	
 	void Update ()
     {
         //transform.forward is not working
-        print(Vector3.Dot(transform.forward, player.transform.position) + "\t" + transform.forward);
-        Debug.DrawRay(transform.position, transform.forward * 2, Color.red);
+        //print(Vector3.Dot(transform.forward, player.transform.position) + "\t" + transform.forward);
+        //Debug.DrawRay(transform.position, transform.forward * 2, Color.red);
 
         switch (status)
         {
@@ -54,13 +55,21 @@ public class NPCControl : MonoBehaviour, IDestoryable {
                 RaycastHit hit;
 
                 //Raycast, if the raycast hits something (ice block or wall)
-                Physics.Raycast(transform.position, transform.forward, out hit);
-                if (hit.rigidbody != null)
+				Physics.Raycast(transform.position, transform.forward, out hit);
+				if (hit.rigidbody != null)
                 {
-                    //set destionation to 1 unit 'in front' of raycast his position
-                    destination = hit.rigidbody.position - (hit.rigidbody.position - transform.position).normalized;
-                    status = Status.moving;
+					//if (!hit.rigidbody.gameObject.name.Equals(gameObject.name))
+					//{
+                    	//set destionation to 1 unit 'in front' of raycast his position
+						destination = hit.rigidbody.position - (hit.rigidbody.position - transform.position).normalized;
+                    	status = Status.moving;
+					//}
+					//print(hit.rigidbody.gameObject.name);
                 }
+				else if (hit.collider != null) {
+					if (hit.collider.gameObject == player)	
+						print("Hit player");
+				}
                 break;
             #endregion
             #region Moving
@@ -72,7 +81,7 @@ public class NPCControl : MonoBehaviour, IDestoryable {
                 {
                     status = Status.still;
                     //Always right
-                    Direction d = (Random.Range(0, 1) == 0) ? Direction.right : Direction.left;
+                    Direction d = (Random.Range(0, 2) == 0) ? Direction.right : Direction.left;
                     StartCoroutine(WaitForNewDestination(d));
                 }
                 break;
@@ -80,10 +89,10 @@ public class NPCControl : MonoBehaviour, IDestoryable {
             #region Following
             case Status.following:
                 //move 1 block at a time towards the player
-
+                Vector3 toPlayer = player.transform.position - transform.position;
                 //check left
-                float dot = Vector3.Dot(Vector3.forward, player.transform.position);
-
+                float dot = Vector3.Dot(transform.forward, toPlayer);
+			//print(transform.forward);
                 if (dot > 0)
                 {
                     if (destinationWhileFollowing == Vector3.down)
@@ -103,18 +112,22 @@ public class NPCControl : MonoBehaviour, IDestoryable {
                         destinationWhileFollowing = Vector3.down;
                     //if (dot < 0)
                 }
+			else {
+				transform.Rotate(0, -90, 0);
+				return;
+			}
                 break;
             #endregion
         }
 
         //Raycast to player
-        Debug.DrawRay(raycastTarget.transform.position, player.transform.position - transform.position, Color.green);
+		Debug.DrawRay(raycastTarget.transform.position, player.transform.position - transform.position, Color.green);
         
         RaycastHit h;
-        Physics.Raycast(raycastTarget.transform.position, player.transform.position - transform.position, out h);
-        if (h.rigidbody != null)
+		Physics.Raycast(raycastTarget.transform.position, player.transform.position - transform.position, out h);
+        if (h.collider != null)
         {
-            if (h.rigidbody.gameObject.Equals(player) && (player.transform.position - transform.position).magnitude < 5)
+			if (h.collider.gameObject.Equals(player) && (player.transform.position - transform.position).magnitude < 5)
             {
 
                 status = Status.following;
