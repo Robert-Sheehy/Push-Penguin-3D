@@ -51,7 +51,7 @@ public class IceBlockController : MonoBehaviour, IMoveable, IHitable, IDestoryab
     private WorldControllerMockUp worldMockUp;
     private Vector3 destinationForSlide;
     private Vector3 velocity;
-    private float speedOfIceBlock = 2.0f; 
+    private float speedOfIceBlock = 4.0f; 
 
     /// <summary>
     /// Returns the status of the iceblock, can only be set by functions push and collide
@@ -97,19 +97,20 @@ public class IceBlockController : MonoBehaviour, IMoveable, IHitable, IDestoryab
             currentState = IceBlockState.Moving;
         }
         */
-        if(world.canMove(this, pusherPosition))
-        {
-            //todo: DestinationForSlide must be changed, this one is not working
-            //destinationForSlide = world.getDestinationForIceblockMoving(this, pusherPosition);
-            velocity = world.getDestinationForIceblockMoving(this, pusherPosition);
-            // velocity = speedOfIceBlock * (destinationForSlide - transform.position).normalized; // check for 0
-            //todo: Destination should be a natural number only for straight moving
+        Vector3 direction = world.getDirectionForIceblockMoving(this, pusherPosition);
+        velocity = speedOfIceBlock * direction;
+
+        if (velocity.magnitude > 0.1f)
+
+
+          if (world.IsEmptyAt(transform.position + direction))
             currentState = IceBlockState.Moving;
-        }
+ 
+
         else
         {
-            currentState = IceBlockState.Destroying;
-        }
+                currentState = IceBlockState.Destroying;
+            } 
     }
 
     /// <summary>
@@ -124,7 +125,7 @@ public class IceBlockController : MonoBehaviour, IMoveable, IHitable, IDestoryab
     /// </summary>
     void Update ()
     {
-      //  CheckForTest();
+
 
         switch (currentState)
         {
@@ -213,13 +214,14 @@ public class IceBlockController : MonoBehaviour, IMoveable, IHitable, IDestoryab
         return Vector3.Dot((destinationForSlide - transform.position), velocity) < 0.0f;
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision other)
     {
         Debug.Log("Collision detected!");
         if (this.currentState == IceBlockState.Moving)
         {
             Debug.Log("Iceblock was moving, stop it");
             this.currentState = IceBlockState.Still;
+            transform.position = world.SnapTo(transform.position);
         }
         
         //info: Get the type of the object we collide into

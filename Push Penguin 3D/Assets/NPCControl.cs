@@ -89,10 +89,14 @@ public class NPCControl : MonoBehaviour, IDestoryable {
             #region Following
             case Status.following:
                 //move 1 block at a time towards the player
-
+                Vector3 toPlayer = player.transform.position - transform.position;
                 //check left
+<<<<<<< HEAD
 				float dot = Vector3.Dot(transform.forward, player.transform.position);
                 print(dot);
+=======
+                float dot = Vector3.Dot(transform.forward, toPlayer);
+>>>>>>> 857bf56af99160207f495e562309a1cabcbd6724
 			//print(transform.forward);
                 if (dot > 0)
                 {

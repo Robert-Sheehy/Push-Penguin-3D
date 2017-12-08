@@ -1,12 +1,12 @@
 ﻿
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PickUpItemControl : MonoBehaviour
 {
-    enum ItemState { growing, waiting, shrinking, destroying}
+    enum ItemState { growing, waiting, shrinking, destroying }
 
     ItemState currentState = ItemState.growing;
     private float rotSpeed = 360.0f;
@@ -18,8 +18,8 @@ public class PickUpItemControl : MonoBehaviour
     private float growingTime = 2.0f, growingTimer = 0f;
     private float shrinkTime = 3.0f, shrinkingTimer = 0f;
     private float _timeAlive = 30; //Seconds
-   
-  
+
+
 
     public Transform Cherry, Apple, Banana;
     public Transform Popup;
@@ -31,15 +31,15 @@ public class PickUpItemControl : MonoBehaviour
         growingTimer = 0;
         transform.localScale = startingScale * Vector3.one;
         theManager = FindObjectOfType<GameManagerControl>();
-    
+
     }
     void Update()
     {
-        CountdownAndDestroyYourself();
-        transform.Rotate(Vector3.up, rotSpeed*Time.deltaTime);
+        timeAlive -= Time.deltaTime;
+        transform.Rotate(Vector3.up, rotSpeed * Time.deltaTime);
 
 
-        switch(currentState)
+        switch (currentState)
         {
             case ItemState.growing:
 
@@ -48,7 +48,7 @@ public class PickUpItemControl : MonoBehaviour
 
             case ItemState.waiting:
 
-                if(shrinkTime >= timeAlive) currentState = ItemState.shrinking;
+                if (shrinkTime >= timeAlive) currentState = ItemState.shrinking;
 
                 break;
 
@@ -62,6 +62,8 @@ public class PickUpItemControl : MonoBehaviour
             case ItemState.destroying:
 
 
+                theManager.ItemDestroyed(this);
+                Destroy(gameObject);
 
                 break;
 
@@ -87,15 +89,7 @@ public class PickUpItemControl : MonoBehaviour
             {
                 _points = maximumPoints;
             }
-            else
 
-            if(value <= minimumPoints)
-            {
-                _points = minimumPoints;
-            } else if (value >= maximumPoints)
-            {
-                _points = maximumPoints;
-            } 
 
         }
     }
@@ -113,30 +107,6 @@ public class PickUpItemControl : MonoBehaviour
         }
     }
 
-    private void CountdownAndDestroyYourself()
-    {
-        timeAlive -= Time.deltaTime;
-        if (timeAlive < 0)
-        {
-            theManager.ItemDestroyed(this);
-            Destroy(gameObject);
-
-            //Remove after test
-            print(points);
-            Transform newPopup = Instantiate(Popup, transform.position, Quaternion.identity);
-
-            PopUpScoreControl ps = newPopup.GetComponentInChildren<PopUpScoreControl>();
-
-            if (ps)
-                ps.WithScoreOf(points, transform.position);
-            else print("none");
-            
-     
-            theManager.ItemDestroyed(this);
-            Destroy(gameObject);
-
-        }
-    }
 
 
 
@@ -144,14 +114,14 @@ public class PickUpItemControl : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        /*if (collision.gameObject.GetComponent<PenguinControl>())
+        if (collision.gameObject.GetComponent<PenguinControl>())
         {
             Transform newPopup = Instantiate(Popup, transform.position, Quaternion.identity);
 
-            newPopup.GetComponent<PopUpScoreControl>().WithScoreOf(_points);
+            newPopup.GetComponent<PopUpScoreControl>().WithScoreOf(_points, transform.position);
             theManager.ItemDestroyed(this);
             Destroy(gameObject);
-        }*/
+        }
 
 
     }
@@ -161,7 +131,7 @@ public class PickUpItemControl : MonoBehaviour
     internal void YouAre(GameManagerControl.ItemType typeOfItem, int Score, float time)
     {
         Transform part;
-      switch (typeOfItem)
+        switch (typeOfItem)
 
         {
             case GameManagerControl.ItemType.Apple:
@@ -200,7 +170,7 @@ public class PickUpItemControl : MonoBehaviour
     private void grow()
     {
         growingTimer += Time.deltaTime;
-        transform.localScale = Mathf.Lerp(startingScale, 1.0f,  (growingTimer / growingTime)) * Vector3.one;
+        transform.localScale = Mathf.Lerp(startingScale, 1.0f, (growingTimer / growingTime)) * Vector3.one;
         if (growingTimer > growingTime) currentState = ItemState.waiting;
     }
 
@@ -208,9 +178,9 @@ public class PickUpItemControl : MonoBehaviour
     {
         shrinkingTimer += Time.deltaTime;
         transform.localScale = Mathf.Lerp(1.0f, startingScale, (shrinkingTimer / shrinkTime)) * Vector3.one;
-        if(timeAlive < 0) currentState = ItemState.destroying;
+        if (timeAlive < 0) currentState = ItemState.destroying;
     }
-  
+
 
 
 }

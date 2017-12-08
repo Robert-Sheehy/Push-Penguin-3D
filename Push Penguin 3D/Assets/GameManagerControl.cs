@@ -23,13 +23,7 @@ public class GameManagerControl : MonoBehaviour
 
     WorldControl theWorld;
     private int numberOfEggs= 4;
-
-    public void EggSpawn()
-    {
-        Vector3 positionToSpawn;// = theWorld.randomEmptyPosition();
-        positionToSpawn = new Vector3(1, 1, 1);
-        EggSpawnAt(positionToSpawn);
-   }
+    private int numberOfStartingItems = 3;
 
     public void EnemySpawn(NPCControl enemy)
     {
@@ -48,10 +42,10 @@ public class GameManagerControl : MonoBehaviour
     {
         ItemType newItemType = (ItemType)UnityEngine.Random.Range(0, 3);
 
-        Vector3 positionToSpawn;// = theWorld.randomEmptyPosition();
-        positionToSpawn = new Vector3(1, 1, 1);
-        float timeSpawned = Time.time;
-        ItemSpawnAt(newItemType, positionToSpawn, timeSpawned);
+        Vector3 positionToSpawn= theWorld.randomEmptyPosition();
+
+ 
+        ItemSpawnAt(newItemType, positionToSpawn);
 
     }
 
@@ -59,15 +53,15 @@ public class GameManagerControl : MonoBehaviour
     {
         Transform newPlayer = Instantiate(playerClone, positionToSpawn, Quaternion.identity);
         PenguinControl newPlayerControl = newPlayer.GetComponent<PenguinControl>();
-        //newPlayerControl.IAm(this);
+        newPlayerControl.IAm(this);
         player.Add(newPlayerControl);
     }
 
-    private void ItemSpawnAt(ItemType newItemType, Vector3 positionToSpawn, float timeSpawned)
+    private void ItemSpawnAt(ItemType newItemType, Vector3 positionToSpawn)
     {
             Transform newItem = Instantiate(itemClone, positionToSpawn, Quaternion.identity);
             PickUpItemControl newItemControl = newItem.GetComponent<PickUpItemControl>();
-            newItemControl.YouAre(newItemType, 100 * (1 + (int)newItemType), 5.0f);
+            newItemControl.YouAre(newItemType, 100 * (1 + (int)newItemType), 30.0f);
             items.Add(newItemControl);
     }
 
@@ -109,69 +103,69 @@ public class GameManagerControl : MonoBehaviour
         player.Remove(penguin);
     }
 
-    public void LevelControl()
-    {
-        while (currentLevel < 4)
-        {
-            switch (currentLevel)
-            {
-                case 1:
-                    {
-                        //theWorld.LevelStart(currentLevel);
+    //public void LevelControl()
+    //{
+    //    while (currentLevel < 4)
+    //    {
+    //        switch (currentLevel)
+    //        {
+    //            case 1:
+    //                {
+    //                    //theWorld.LevelStart(currentLevel);
 
-                        PlayerSpawn();
+    //                    PlayerSpawn();
 
-                        for(int i = 0; i < 5; i++)
-                        {
-                            SpawnRandomItem();
-                            EggSpawn();
-                        }
-                        //currentLevel++;
-                        break;
-                    }
-                case 2:
-                    {
-                        //theWorld.LevelStart(currentLevel);
+    //                    for(int i = 0; i < 5; i++)
+    //                    {
+    //                        SpawnRandomItem();
+    //                        EggSpawn();
+    //                    }
+    //                    //currentLevel++;
+    //                    break;
+    //                }
+    //            case 2:
+    //                {
+    //                    //theWorld.LevelStart(currentLevel);
 
-                        PlayerSpawn();
+    //                    PlayerSpawn();
 
-                        for(int i = 0; i < 8; i++)
-                        {
-                            EggSpawn();
+    //                    for(int i = 0; i < 8; i++)
+    //                    {
+    //                        EggSpawn();
 
-                            if(i < 5)
-                            {
-                                SpawnRandomItem();
-                            }
-                        }
-                        //currentLevel++;
-                        break;
-                    }
-                case 3:
-                    {
-                        //theWorld.LevelStart(currentLevel);
+    //                        if(i < 5)
+    //                        {
+    //                            SpawnRandomItem();
+    //                        }
+    //                    }
+    //                    //currentLevel++;
+    //                    break;
+    //                }
+    //            case 3:
+    //                {
+    //                    //theWorld.LevelStart(currentLevel);
 
-                        PlayerSpawn();
+    //                    PlayerSpawn();
 
-                        for (int i = 0; i < 10; i++)
-                        {
-                            EggSpawn();
+    //                    for (int i = 0; i < 10; i++)
+    //                    {
+    //                        EggSpawn();
 
-                            if (i < 7)
-                            {
-                                SpawnRandomItem();
-                            }
-                        }
-                        //currentLevel++;
-                        break;
-                    }
-                case 4:
-                    {
-                        break;
-                    }
-            }
-        }
-    }
+    //                        if (i < 7)
+    //                        {
+    //                            SpawnRandomItem();
+    //                        }
+    //                    }
+    //                    //currentLevel++;
+    //                    break;
+    //                }
+    //            case 4:
+    //                {
+    //                    break;
+    //                }
+    //        }
+    //    }
+    //}
 
     // Use this for initialization
     void Start()
@@ -187,22 +181,29 @@ public class GameManagerControl : MonoBehaviour
         theWorld.spawnRandomRocks(10);
         theWorld.spawnRandomIceBlocks(20);
 
-        Vector3 playerStartingPostion = theWorld.randomEmptyPosition();
-        Instantiate(playerClone, playerStartingPostion, Quaternion.identity);
 
-        for (int i = 0; i<numberOfEggs; i++)
+        for (int i = 0; i < numberOfEggs; i++)
         {
             Vector3 eggStartingPosition = theWorld.randomEmptyPosition();
-            Instantiate(eggClone, eggStartingPosition, Quaternion.identity);
-
+            EggSpawnAt(eggStartingPosition);
         }
 
-    //    LevelControl();
+           
+            for (int i = 0; i < numberOfStartingItems; i++)
+            SpawnRandomItem();
+
+
+
+        Vector3 playerStartingPostion = theWorld.randomEmptyPosition();
+        Instantiate(playerClone, playerStartingPostion+0.2f*Vector3.up, Quaternion.identity);
+
+
+        //    LevelControl();
     }
 
     // Update is called once per frame
     void Update(){
-        if (Input.GetKeyDown(KeyCode.E)) EggSpawn();
+
         if (Input.GetKeyDown(KeyCode.C)) SpawnRandomItem();
     }
 }

@@ -7,40 +7,63 @@ public class PenguinControl : Movement {
 
     enum PlayerState{Moving, Still, Collecting, Pushing, Dying }
 
-    GameObject cameraControl;
-	private Vector3 playerPosition;
     private float currentSpeed = 10.0f;
     private float turningSpeed = 360.0f;
+    private GameManagerControl theManager;
+    private Vector3 newPosition;
+    public LayerMask mask;
 
-
-
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
+        mask = LayerMask.GetMask("Player") |  LayerMask.GetMask("PickUp");
+        
+        mask = ~mask;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
+        newPosition = transform.position;
         if (shouldMoveForward()) MoveForward();
-        playerPosition = this.transform.position;
+
 
         if (shouldTurnLeft()) TurnLeft();
-        playerPosition = this.transform.position;
+
 
         if (shouldMoveBackward()) MoveBackward();
-        playerPosition = this.transform.position;
 
         if (shouldTurnRight()) TurnRight();
-        playerPosition = this.transform.position;
+
 
         if (shouldStrafeLeft()) StrafeLeft();
-        playerPosition = this.transform.position;
+
 
         if (shouldStrafeRight()) StrafeRight();
 
         if (shouldPush()) push();
+
+        if (isOK(newPosition))
+        {
+            transform.position = newPosition;
+   
+        }
+     
+
+        updateCameraPosition();
         //Debug.Log(playerPosition.ToString());
 
+    }
+
+    private bool isOK(Vector3 newPosition)
+    {
+
+        return  !Physics.CheckSphere(newPosition , 0.4f,mask);
+    }
+
+    private void updateCameraPosition()
+    {
+        Camera.main.transform.position = transform.position + 2.0f * Vector3.up - 3*  transform.forward;
+        Vector3 focus = transform.position + 5 * transform.forward;
+        Camera.main.transform.rotation = Quaternion.LookRotation((focus - Camera.main.transform.position).normalized);
     }
 
     private void push()
@@ -58,6 +81,11 @@ public class PenguinControl : Movement {
         }
     }
 
+    internal void IAm(GameManagerControl gameManagerControl)
+    {
+        theManager = gameManagerControl;
+    }
+
     private bool shouldPush()
     {
         return Input.GetKeyDown(KeyCode.Space);
@@ -70,7 +98,8 @@ public class PenguinControl : Movement {
 
     private void StrafeRight()
     {
-        transform.position += currentSpeed * transform.right * Time.deltaTime;
+       // rigidBody.velocity = currentSpeed * transform.right;
+      newPosition += currentSpeed * transform.right * Time.deltaTime;
     }
 
     private bool shouldStrafeLeft()
@@ -80,7 +109,8 @@ public class PenguinControl : Movement {
 
     private void StrafeLeft()
     {
-        transform.position -= currentSpeed * transform.right * Time.deltaTime;
+        newPosition -= currentSpeed * transform.right * Time.deltaTime;
+        //   rigidBody.velocity =-currentSpeed * transform.right;
     }
 
     private bool shouldTurnRight()
@@ -95,7 +125,6 @@ public class PenguinControl : Movement {
 
     private void MoveBackward()
     {
-        transform.position -= currentSpeed * transform.forward * Time.deltaTime;
     }
 
     private bool shouldMoveBackward()
@@ -115,7 +144,7 @@ public class PenguinControl : Movement {
 
     private void MoveForward()
     {
-        transform.position += currentSpeed * transform.forward * Time.deltaTime;
+        newPosition += currentSpeed * transform.forward * Time.deltaTime;
     }
 
     private bool shouldMoveForward()
@@ -123,31 +152,16 @@ public class PenguinControl : Movement {
         return Input.GetKey(KeyCode.W);
     }
 
-    public void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Working...");
-        if (other.gameObject.GetComponent<IceBlockController>())
-        {
-            Debug.Log("Trigger with Ice Block Dave");
-            MoveBackward();
-            MoveBackward();
-            MoveBackward();
-            MoveBackward();
-        }
-    }
 
-    public void OnTriggerExit(Collider other)
-    {
-       Debug.Log("Trigger De-activated");
-       currentSpeed = 10.0f;
-      
-    }
+
+  
 
     public void OnCollisionEnter(Collision collision)
     {
+        transform.position -= currentSpeed * transform.forward * Time.deltaTime;
         if (collision.gameObject.GetComponent<IceBlockController>())
         {
-            Debug.Log("Collision with Ice Block Dave");
+            
         }
         else
             Debug.Log("not a collision we wanted");
