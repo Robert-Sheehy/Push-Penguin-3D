@@ -119,7 +119,7 @@ public class PickUpItemControl : MonoBehaviour
             Transform newPopup = Instantiate(Popup, transform.position, Quaternion.identity);
 
             newPopup.GetComponent<PopUpScoreControl>().WithScoreOf(_points, transform.position);
-            theManager.ItemDestroyed(this);
+            theManager.ItemCollected(this);
             Destroy(gameObject);
         }
 

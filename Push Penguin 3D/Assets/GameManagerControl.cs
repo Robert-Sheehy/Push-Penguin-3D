@@ -2,8 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
+using UnityEngine.SceneManagement;
 
 public class GameManagerControl : MonoBehaviour
 {
@@ -24,19 +23,15 @@ public class GameManagerControl : MonoBehaviour
     WorldControl theWorld;
     private int numberOfEggs= 4;
     private int numberOfStartingItems = 3;
-
+    private int numberOfCollectedItems;
+    private int TotalToCollectforEndGame = 6;
+    private float spawnTimer, spawnTime = 5.0f;
     public void EnemySpawn(NPCControl enemy)
     {
         enemies.Add(enemy);
     }
 
-    public void PlayerSpawn()
 
-    {
-        Vector3 positionToSpawn;// = theWorld.randomEmptyPosition();
-        positionToSpawn = new Vector3(1, 1, 1);
-        PlayerSpawnAt(positionToSpawn);
-    }
 
     private void SpawnRandomItem()
     {
@@ -101,6 +96,20 @@ public class GameManagerControl : MonoBehaviour
     public void PlayerDestroyed(PenguinControl penguin)
     {
         player.Remove(penguin);
+    }
+
+    internal void ItemCollected(PickUpItemControl pickUpItemControl)
+    {
+        ItemDestroyed(pickUpItemControl);
+        numberOfCollectedItems++;
+        if (numberOfCollectedItems >= TotalToCollectforEndGame)
+        { Debug.Log("Youre Awesome"); }
+
+    }
+
+    internal void GameOver()
+    {
+        SceneManager.LoadScene(0);
     }
 
     //public void LevelControl()
@@ -170,6 +179,7 @@ public class GameManagerControl : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        spawnTimer = spawnTime;
         theWorld = FindObjectOfType<WorldControl>();
 
         if (theWorld) print("found the world");
@@ -194,8 +204,10 @@ public class GameManagerControl : MonoBehaviour
 
 
 
-        Vector3 playerStartingPostion = theWorld.randomEmptyPosition();
-        Instantiate(playerClone, playerStartingPostion+0.2f*Vector3.up, Quaternion.identity);
+       Vector3 playerStartingPostion = theWorld.randomEmptyPosition();
+
+       PlayerSpawnAt(playerStartingPostion + 0.2f * Vector3.up);
+ 
 
 
         //    LevelControl();
@@ -203,7 +215,12 @@ public class GameManagerControl : MonoBehaviour
 
     // Update is called once per frame
     void Update(){
-
-        if (Input.GetKeyDown(KeyCode.C)) SpawnRandomItem();
+        spawnTimer -= Time.deltaTime;
+        if (spawnTimer < 0)
+        {
+            SpawnRandomItem();
+            spawnTimer = spawnTime;
+        }
+        
     }
 }

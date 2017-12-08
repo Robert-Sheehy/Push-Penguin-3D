@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -137,7 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemClone: {fileID: 4346458756852010, guid: b948802932dcdca4e9d8bc6ce14112b9, type: 2}
   eggClone: {fileID: 4131075251394914, guid: e52dfa85a031d5f4d912464cc58dd489, type: 2}
-  playerClone: {fileID: 4232354521115976, guid: 0e32173358eb89f459e8c4a2f0919c4f,
+  playerClone: {fileID: 4741418786913566, guid: 933520f9823b7514b8ab6de7caf2f944,
     type: 2}
 --- !u!4 &157860794
 Transform:
@@ -189,7 +189,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4201470558751560, guid: 365341ca595ad894ab2946a0cd342f8c, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 365341ca595ad894ab2946a0cd342f8c, type: 2}
@@ -347,7 +347,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!4 &1813589609 stripped
 Transform:
