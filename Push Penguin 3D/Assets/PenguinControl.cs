@@ -6,7 +6,7 @@ using UnityEngine;
 public class PenguinControl : Movement {
 
     enum PlayerState{Moving, Still, Collecting, Pushing, Dying }
-
+    Animation ourAnimation;
     private float currentSpeed = 10.0f;
     private float turningSpeed = 360.0f;
     private GameManagerControl theManager;
@@ -18,10 +18,13 @@ public class PenguinControl : Movement {
         mask = LayerMask.GetMask("Player") |  LayerMask.GetMask("PickUp");
         
         mask = ~mask;
+        ourAnimation = GetComponentInChildren<Animation>();
+        if (ourAnimation) print("Found Animator");
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
         newPosition = transform.position;
         if (shouldMoveForward()) MoveForward();
 
@@ -41,8 +44,14 @@ public class PenguinControl : Movement {
 
         if (shouldPush()) push();
 
+        if ((newPosition - transform.position).magnitude > 0.01f)
+        { if (ourAnimation.IsPlaying("idle")) ourAnimation.Play("walk"); }
+        else
+        { if (ourAnimation.IsPlaying("walk")) ourAnimation.Play("idle");   }
+
         if (isOK(newPosition))
         {
+           
             transform.position = newPosition;
    
         }
@@ -159,9 +168,10 @@ public class PenguinControl : Movement {
     public void OnCollisionEnter(Collision collision)
     {
         transform.position -= currentSpeed * transform.forward * Time.deltaTime;
-        if (collision.gameObject.GetComponent<IceBlockController>())
+        if (collision.gameObject.GetComponent<NPCControl>())
         {
-            
+            theManager.GameOver();
+            Destroy(gameObject);  
         }
         else
             Debug.Log("not a collision we wanted");

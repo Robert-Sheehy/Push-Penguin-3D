@@ -219,6 +219,14 @@ public class IceBlockController : MonoBehaviour, IMoveable, IHitable, IDestoryab
         Debug.Log("Collision detected!");
         if (this.currentState == IceBlockState.Moving)
         {
+            var bla2 = other.gameObject.GetComponent<NPCControl>();
+            var isNpc = (bla2 != null);
+            if (isNpc)
+                Destroy(other.gameObject);
+            else
+                Debug.Log("Collider is not an NpC");
+
+
             Debug.Log("Iceblock was moving, stop it");
             this.currentState = IceBlockState.Still;
             transform.position = world.SnapTo(transform.position);
