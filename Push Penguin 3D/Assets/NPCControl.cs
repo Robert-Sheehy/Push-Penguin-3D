@@ -91,7 +91,12 @@ public class NPCControl : MonoBehaviour, IDestoryable {
                 //move 1 block at a time towards the player
                 Vector3 toPlayer = player.transform.position - transform.position;
                 //check left
+<<<<<<< HEAD
+				float dot = Vector3.Dot(transform.forward, player.transform.position);
+                print(dot);
+=======
                 float dot = Vector3.Dot(transform.forward, toPlayer);
+>>>>>>> 857bf56af99160207f495e562309a1cabcbd6724
 			//print(transform.forward);
                 if (dot > 0)
                 {
@@ -112,10 +117,10 @@ public class NPCControl : MonoBehaviour, IDestoryable {
                         destinationWhileFollowing = Vector3.down;
                     //if (dot < 0)
                 }
-			else {
-				transform.Rotate(0, -90, 0);
-				return;
-			}
+    			else {
+	    			transform.Rotate(0, -90, 0);
+		    		return;
+    			}
                 break;
             #endregion
         }
@@ -148,9 +153,9 @@ public class NPCControl : MonoBehaviour, IDestoryable {
     }
 
     /// <summary>
-    /// 
+    /// Move towards a destination.
     /// </summary>
-    /// <param name="destination"></param>
+    /// <param name="dest">The destination to move to</param>
     private void Move(Vector3 dest)
     {
         //Move towards destination
