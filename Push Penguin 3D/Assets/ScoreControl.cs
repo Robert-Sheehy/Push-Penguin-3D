@@ -8,22 +8,25 @@ public class ScoreControl : MonoBehaviour, iScore {
     //PopUpScoreControl popUpScore;
     private int CurrentScore = 0;
     TextMesh scoreMesh;
+    int Count = 10;
    // private int currentScore;
 
 
    public void AddScore(int scoreIncrement)
     {
 
-        /*GameObject scoreText = new GameObject();
-        TextMesh scoreMesh = new TextMesh ();
+        //GameObject scoreText = new GameObject();
+        //scoreText.GetComponent<TextMesh>();
+        /*TextMesh scoreMesh = new TextMesh ();
         scoreText.AddComponent (scoreMesh);
         MeshRenderer meshRenderer = scoreText.AddComponent(meshRenderer);*/
         CurrentScore += scoreIncrement;
         //scoreMesh.transform.position = new Vector3(5, 5, 0);
-        scoreMesh.text = "Score: " + CurrentScore;
+        scoreMesh.text = "SCORE: " + CurrentScore;
         scoreMesh.fontSize = 255;
         scoreMesh.characterSize = .03f;
         print(CurrentScore);
+        /*https://www.dafont.com/black-santa.font - Font - Black Santa - Created by imagex */
     }
 
 
@@ -33,13 +36,21 @@ public class ScoreControl : MonoBehaviour, iScore {
         scoreMesh = GetComponent<TextMesh>();
         AddScore(0);
         scoreMesh.transform.parent = Camera.main.transform;
-        scoreMesh.transform.position = new Vector3(5, 5, 0);
+        scoreMesh.transform.position = new Vector2(4.5f, 5.7f);
+        
         //Cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
         //scoreMesh.transform.parent = Camera.main.transform;
     }
 	 
 	// Update is called once per frame
 	void Update () {
+       /* if(CurrentScore >=300 && Count >= 0)
+        {
+            scoreMesh.text = "Score: " + CurrentScore + "\nCongrats Over 300 points";
+            scoreMesh.characterSize = .03f;
+            scoreMesh.transform.position = new Vector2(4,4);
+        }
+        Count--;*/
         //Testing Score
 
         /*if(Input.GetKeyDown(KeyCode.Space) && Validator == 1)

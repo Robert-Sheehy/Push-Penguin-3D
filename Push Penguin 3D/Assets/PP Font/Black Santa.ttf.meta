@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 7651108df870b924088e87f8f27a327b
+timeCreated: 1512735877
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Black Santa
+  fontNames:
+  - Black Santa
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
